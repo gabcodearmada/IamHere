@@ -8,24 +8,32 @@ const {hash, genSalt, compare} = pkg;
 
 const readUsers = async (): Promise<UsersApp[]> => {
     const gotUsers: UsersApp[] = [];
-    const usersData = await fs.readFile('posts-data/users.json', 'utf-8');
-    if (usersData) {
-        const usersStr = usersData.split(',,');
-        for ( let i = 0; i < (usersStr.length-1); i++ ) {
-            gotUsers[i] = JSON.parse(usersStr[i]) as UsersApp;
+    try {
+        const usersData = await fs.readFile('posts-data/users.json', 'utf-8');
+        if (usersData) {
+            const usersStr = usersData.split(',,');
+            for ( let i = 0; i < (usersStr.length-1); i++ ) {
+                gotUsers[i] = JSON.parse(usersStr[i]) as UsersApp;
+            }
         }
+    } catch (error) {
+        console.log('error reading users: ', error);
     }
     return gotUsers;
 }
 
 const readPosts = async (): Promise<PostFb[]> => {
     const gotPosts: PostFb[] = [];
-    const postsData = await fs.readFile('posts-data/posts.json', 'utf-8');
-    if (postsData) {
-        const postStr = postsData.split(',,');
-        for ( let i = 0; i < (postStr.length-1); i++ ) {
-          gotPosts[i] = JSON.parse(postStr[i]) as PostFb;
+    try {
+        const postsData = await fs.readFile('posts-data/posts.json', 'utf-8');
+        if (postsData) {
+            const postStr = postsData.split(',,');
+            for ( let i = 0; i < (postStr.length-1); i++ ) {
+            gotPosts[i] = JSON.parse(postStr[i]) as PostFb;
+            }
         }
+    } catch (error) {
+        console.log('error reading posts: ', error);
     }
     return gotPosts;
 }

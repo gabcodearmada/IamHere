@@ -1,0 +1,29 @@
+{
+    "id": "b8e0a03b-a40b-48ae-89af-007c4267c23f",
+    "username": "gaballios",
+    "password": "$2a$10$cXWGMHFg/wmpAFXAfwZRxeQfABmtp.bg5TNXo/YrmhLaDjPZKSauO",
+    "friends": ["07ddec77-4fd5-4ed7-8037-4aa3f991d142","9b9d92b8-a4f2-4ac0-a62f-27811736c60f","37e8d1ce-9a61-4c42-ac6e-16fd5c460b62"],
+    "pubname": "Μπάλλιος",
+    "what": "Al3990()"
+  },,{
+    "id": "07ddec77-4fd5-4ed7-8037-4aa3f991d142",
+    "username": "toumpasp",
+    "password": "$2a$10$ya6IHW25rm2NfjolCRA.C.ZVezOlqNj0kAd.tRagnTt8T7qck2Hf2",
+    "friends": ["b8e0a03b-a40b-48ae-89af-007c4267c23f"],
+    "pubname": "Τούμπας Π.",
+    "what": "Panos!1454"
+  },,{
+    "id": "9b9d92b8-a4f2-4ac0-a62f-27811736c60f",
+    "username": "matsoukasg",
+    "password": "$2a$10$bgjCnCLUUD0DEikCFIhUCuuiVi6ijNsooVS8PMjoCjoAvnqd8fFsW",
+    "friends": ["b8e0a03b-a40b-48ae-89af-007c4267c23f","37e8d1ce-9a61-4c42-ac6e-16fd5c460b62"],
+    "pubname": "Ματσούκας",
+    "what": "George@0535"
+  },,{
+    "id": "37e8d1ce-9a61-4c42-ac6e-16fd5c460b62",
+    "username": "papaefth",
+    "password": "$2a$10$Q/wLm6j4Yececew2V4uPxOfza.oZG5p1.nc3AElMdFuMNwExSS396",
+    "friends": ["b8e0a03b-a40b-48ae-89af-007c4267c23f","9b9d92b8-a4f2-4ac0-a62f-27811736c60f"],
+    "pubname": "Παπαευθυμίου",
+    "what": "Thomas#3895"
+  },,

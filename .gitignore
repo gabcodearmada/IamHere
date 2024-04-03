@@ -4,7 +4,7 @@ node_modules
 /.svelte-kit
 /package
 functions
-/posts-data/*.json
+posts-data/posts.json
 .firebaserc
 firebase.json
 static/moments/*

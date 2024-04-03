@@ -48,7 +48,6 @@
 		"bcryptjs": "^2.4.3",
 		"dexie": "^4.0.1-beta.14",
 		"formidable": "^3.5.1",
-		"fs": "^0.0.1-security",
 		"svelte-scrollto": "^0.2.0",
 		"web-push": "^3.6.7"
 	}

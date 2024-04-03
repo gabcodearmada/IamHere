@@ -81,7 +81,7 @@ export const load: Load = async ({ cookies }) => {
             }
         };
     } catch(err) {
-        console.log(err);
+        console.log('error on loading: ', err);
         return {
             props: {
                 data: [],

@@ -10,7 +10,7 @@ export const load: Load = async (event: LoadEvent) => {
     try {
         const data = event.data!.props.data;
         gotPosts = [];
-        if (data) {
+        if (data && data.length > 0) {
             const postsStr = data.split(',,');
             for ( let i = 0; i < (postsStr.length-1); i++ ) {
                 gotPosts[i] = JSON.parse(postsStr[i]);

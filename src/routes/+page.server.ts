@@ -9,7 +9,7 @@ const {hash, genSalt, compare} = pkg;
 const readUsers = async (): Promise<UsersApp[]> => {
     const gotUsers: UsersApp[] = [];
     try {
-        const usersData = await fs.readFile('posts-data/users.json', 'utf-8');
+        const usersData = await fs.readFile('/posts-data/users.json', 'utf-8');
         if (usersData) {
             const usersStr = usersData.split(',,');
             for ( let i = 0; i < (usersStr.length-1); i++ ) {
@@ -25,7 +25,7 @@ const readUsers = async (): Promise<UsersApp[]> => {
 const readPosts = async (): Promise<PostFb[]> => {
     const gotPosts: PostFb[] = [];
     try {
-        const postsData = await fs.readFile('posts-data/posts.json', 'utf-8');
+        const postsData = await fs.readFile('/posts-data/posts.json', 'utf-8');
         if (postsData) {
             const postStr = postsData.split(',,');
             for ( let i = 0; i < (postStr.length-1); i++ ) {
@@ -43,7 +43,7 @@ const writePosts = async (newPosts:PostFb[]): Promise<void> => {
     newPosts.forEach((post) => {
       jsonString += JSON.stringify(post, null, 2) + ',,';
     });
-    await fs.writeFile('posts-data/posts.json', jsonString);
+    await fs.writeFile('/posts-data/posts.json', jsonString);
 }
   
 export const load: Load = async ({ cookies }) => {
@@ -71,7 +71,7 @@ export const load: Load = async ({ cookies }) => {
             }
         }
 
-        const data = await fs.readFile('posts-data/posts.json', 'utf-8');
+        const data = await fs.readFile('/posts-data/posts.json', 'utf-8');
         return {
             props: {
                 data,
@@ -141,7 +141,7 @@ export const actions = {
         }
 
         const jsonString = JSON.stringify(newPost, null, 2);
-        await fs.appendFile('posts-data/posts.json', jsonString + ',,');
+        await fs.appendFile('/posts-data/posts.json', jsonString + ',,');
  
         pushNewPost(newPost);
 

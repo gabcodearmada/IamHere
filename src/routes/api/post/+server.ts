@@ -5,7 +5,7 @@ import { pushNewPost } from '$lib/utilities/siteData';
 
 const readPosts = async (): Promise<PostFb[]> => {
   const gotPosts: PostFb[] = [];
-  const postsData = await fs.readFile('posts-data/posts.json', 'utf-8');
+  const postsData = await fs.readFile('/posts-data/posts.json', 'utf-8');
   if (postsData) {
       const postStr = postsData.split(',,');
       for ( let i = 0; i < (postStr.length-1); i++ ) {
@@ -20,7 +20,7 @@ const writePosts = async (newPosts:PostFb[]): Promise<void> => {
   newPosts.forEach((post) => {
     jsonString += JSON.stringify(post, null, 2) + ',,';
   });
-  await fs.writeFile('posts-data/posts.json', jsonString);
+  await fs.writeFile('/posts-data/posts.json', jsonString);
 }
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -93,7 +93,7 @@ export const POST: RequestHandler = async ({ request }) => {
       const newPost = formData.get('newpost') as string;
       const postToAdd = JSON.parse(newPost) as PostFb;
 
-      await fs.appendFile('posts-data/posts.json', JSON.stringify(postToAdd, null, 2) + ',,');
+      await fs.appendFile('/posts-data/posts.json', JSON.stringify(postToAdd, null, 2) + ',,');
 
       return new Response('200');
     }

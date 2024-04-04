@@ -1,37 +1,27 @@
 import { fail, type Load  } from '@sveltejs/kit';
 import type { Actions } from './$types';
-import { promises as fs } from 'fs';
+import { kv } from '@vercel/kv';
 import { PostFb, UsersApp, FriendsFull } from '$lib/classes/swClasses.ts';
 import { pushNewPost } from '$lib/utilities/siteData';
 import pkg from 'bcryptjs';
 const {hash, genSalt, compare} = pkg;
 
+
 const readUsers = async (): Promise<UsersApp[]> => {
-    const gotUsers: UsersApp[] = [];
+    let  gotUsers: UsersApp[] = [];
     try {
-        const usersData = await fs.readFile('/posts-data/users.json', 'utf-8');
-        if (usersData) {
-            const usersStr = usersData.split(',,');
-            for ( let i = 0; i < (usersStr.length-1); i++ ) {
-                gotUsers[i] = JSON.parse(usersStr[i]) as UsersApp;
-            }
-        }
+        gotUsers = await kv.json.get('users') as UsersApp[];
     } catch (error) {
         console.log('error reading users: ', error);
     }
+
     return gotUsers;
 }
 
 const readPosts = async (): Promise<PostFb[]> => {
-    const gotPosts: PostFb[] = [];
+    let gotPosts: PostFb[] = [];
     try {
-        const postsData = await fs.readFile('/posts-data/posts.json', 'utf-8');
-        if (postsData) {
-            const postStr = postsData.split(',,');
-            for ( let i = 0; i < (postStr.length-1); i++ ) {
-            gotPosts[i] = JSON.parse(postStr[i]) as PostFb;
-            }
-        }
+        gotPosts = await kv.json.get('posts') as PostFb[];
     } catch (error) {
         console.log('error reading posts: ', error);
     }
@@ -50,6 +40,7 @@ export const load: Load = async ({ cookies }) => {
     const userid = cookies.get('userid');
 
     let username = '';
+    let gotPosts: PostFb[] = [];
     let friends: string[] = [];
     const fullFriends: FriendsFull[] = [];
     try {
@@ -69,12 +60,15 @@ export const load: Load = async ({ cookies }) => {
                     }
                 });
             }
+
+            gotPosts = await readPosts();
+
+            console.log('gotPosts at +page.server.ts: ', gotPosts);
         }
 
-        const data = await fs.readFile('/posts-data/posts.json', 'utf-8');
         return {
             props: {
-                data,
+                gotPosts,
                 userid,
                 username,
                 friends: JSON.stringify(fullFriends)
@@ -84,7 +78,7 @@ export const load: Load = async ({ cookies }) => {
         console.log('error on loading: ', err);
         return {
             props: {
-                data: [],
+                gotPosts: [],
                 userid: '',
                 username: '',
                 friends: JSON.stringify(fullFriends)

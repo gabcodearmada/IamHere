@@ -45,6 +45,8 @@
 		"@types/serviceworker": "^0.0.84",
 		"@types/web": "^0.0.142",
 		"@types/web-push": "^3.6.3",
+		"@vercel/kv": "^1.0.1",
+		"@vercel/toolbar": "^0.1.13",
 		"bcryptjs": "^2.4.3",
 		"dexie": "^4.0.1-beta.14",
 		"formidable": "^3.5.1",

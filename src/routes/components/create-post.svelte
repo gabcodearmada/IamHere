@@ -140,7 +140,8 @@
     try {
       const geoPosition = await getPosition();
       position = {lat: geoPosition.coords.latitude, lng: geoPosition.coords.longitude};
-      const getAddress = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=AI0aS5A4zrzntYH_xRN7fXzzXrfe8whNxbD2C0A`);
+      const googleKey = import.meta.env.VITE_GOOGLE_API;
+      const getAddress = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=${googleKey}`);
       if (getAddress.ok) {
         const data = await getAddress.json();
         const address = data.results[0]?.formatted_address || '';

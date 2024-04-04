@@ -8,14 +8,14 @@ export const load: Load = async (event: LoadEvent) => {
     let userid = '';
     let friends = JSON.stringify([]);
     try {
-        const data = event.data!.props.data;
-        gotPosts = [];
-        if (data && data.length > 0) {
-            const postsStr = data.split(',,');
-            for ( let i = 0; i < (postsStr.length-1); i++ ) {
-                gotPosts[i] = JSON.parse(postsStr[i]);
-            }
-        }
+        gotPosts = event.data!.props.gotPosts;
+        // gotPosts = [];
+        // if (data && data.length > 0) {
+        //     const postsStr = data.split(',,');
+        //     for ( let i = 0; i < (postsStr.length-1); i++ ) {
+        //         gotPosts[i] = JSON.parse(postsStr[i]);
+        //     }
+        // }
 
         userid = event.data!.props.userid;
         username = event.data!.props.username;

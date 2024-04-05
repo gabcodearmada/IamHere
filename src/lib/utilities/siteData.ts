@@ -61,7 +61,8 @@ export const deleteExistingPost = async (postId:string, image:string) => {
         postData.append('postid', postId);
         postData.append('image', image);
 
-        const request = new Request('http://localhost:5173/api/post', {
+        // const request = new Request('http://localhost:5173/api/post', {
+        const request = new Request('/api/post', {
             method: 'POST',
             body: postData
         });
@@ -134,12 +135,14 @@ export const writeImage = async (picture:Blob, name:string) => {
         const postData = new FormData();
         postData.append('file', picture, name);
         
-        const request = new Request('http://localhost:5173/api/image', {
+        const request = new Request('/api/image', {
             method: 'POST',
             body: postData
         });
 
         const response = await fetch(request);
+
+        console.log('image delete response: ', response);
 
         return response.status;
     } catch (error) {

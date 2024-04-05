@@ -1,6 +1,7 @@
 import { fail, type Load  } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { kv } from '@vercel/kv';
+import { put } from '@vercel/blob';
 import { PostFb, UsersApp, FriendsFull } from '$lib/classes/swClasses.ts';
 import { pushNewPost } from '$lib/utilities/siteData';
 import pkg from 'bcryptjs';
@@ -28,6 +29,14 @@ const readPosts = async (): Promise<PostFb[]> => {
     return gotPosts;
 }
 
+const appendPost = async (newPost:PostFb): Promise<void> => {
+    try {
+        await kv.json.arrappend('posts', '$', newPost);
+    } catch (error) {
+        console.log('error appending post: ', error);
+    }
+}
+/*
 const writePosts = async (newPosts:PostFb[]): Promise<void> => {
     let jsonString = '';
     newPosts.forEach((post) => {
@@ -35,7 +44,7 @@ const writePosts = async (newPosts:PostFb[]): Promise<void> => {
     });
     await fs.writeFile('/posts-data/posts.json', jsonString);
 }
-  
+*/
 export const load: Load = async ({ cookies }) => {
     const userid = cookies.get('userid');
 
@@ -90,6 +99,9 @@ export const load: Load = async ({ cookies }) => {
 export const actions = {
 	savepost: async ({ request }) => {
 		const data = await request.formData();
+
+console.log('data: ', data);
+
         let title = data.get('title') as string;
         title = title.trim();
         let location = data.get('location') as string;
@@ -131,12 +143,11 @@ export const actions = {
         if (imageType.length > 5) {
             newPost = new PostFb(postId, title, location, imageType, owner, answerto);
         } else {
-            newPost = new PostFb(postId, title, location, `/moments/${postId}.${imageType}`, owner, answerto);
+            newPost = new PostFb(postId, title, location, `${postId}.${imageType}`, owner, answerto);
         }
 
-        const jsonString = JSON.stringify(newPost, null, 2);
-        await fs.appendFile('/posts-data/posts.json', jsonString + ',,');
- 
+        await appendPost(newPost);
+        
         pushNewPost(newPost);
 
         const maxPostsNum = import.meta.env.VITE_VAPID_MAX_POSTS;
@@ -156,18 +167,20 @@ export const actions = {
             }
         }
 
+        console.log( 'postsToBeDeleted: ', postsToBeDeleted);
+
         if (postsToBeDeleted.length) {
             const newPostsFromDel = existingPosts.filter((post) => !postsToBeDeleted.includes(post.id));
-            await writePosts(newPostsFromDel);
+            // await writePosts(newPostsFromDel);
 
-            imagesToBeDeleted.forEach(async (img) => {
-                await fs.unlink(img);
-            });
+            // imagesToBeDeleted.forEach(async (img) => {
+            //     await fs.unlink(img);
+            // });
         }
         return { 
             response: {
                 status: 200,
-                postuserid: jsonString,
+                postuserid: JSON.stringify(newPost, null, 2),
                 friends: '',
                 from: 'posts'
             }

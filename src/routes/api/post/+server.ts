@@ -2,6 +2,7 @@ import type { RequestHandler } from './$types';
 import { promises as fs } from 'fs';
 import { PostFb } from '$lib/classes/swClasses.ts';
 import { pushNewPost } from '$lib/utilities/siteData';
+import { kv } from '@vercel/kv';
 
 const readPosts = async (): Promise<PostFb[]> => {
   const gotPosts: PostFb[] = [];
@@ -23,6 +24,14 @@ const writePosts = async (newPosts:PostFb[]): Promise<void> => {
   await fs.writeFile('/posts-data/posts.json', jsonString);
 }
 
+const deletePost = async (postid:string): Promise<void> => {
+  try {
+      await kv.json.del('posts', `$.[?(@.id=="${postid}")]`);
+  } catch (error) {
+      console.log('error deleting post: ', error);
+  }
+}
+
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const formData = await request.formData();
@@ -32,13 +41,15 @@ export const POST: RequestHandler = async ({ request }) => {
       const postid = formData.get('postid') as string;
       const image = formData.get('image') as string;
       if (postid) {
+        await deletePost(postid);
+        /*
         const imagePath = 'static/moments/' + image.slice(image.lastIndexOf('/') + 1);
         const gotPosts = await readPosts();
         const newGotPosts = gotPosts.filter((post) => post.id !== postid);
         await writePosts(newGotPosts);
 
         await fs.unlink(imagePath);
-
+        */
         return new Response('200');
       }
     } else if (what === 'forward') {

@@ -66,10 +66,17 @@
   const postSavedUploadImage = async () => {
     if (!$swStore.isAnswer) {
       const postWritten = await JSON.parse(form?.response?.postuserid!);
+      const uploadPath = `${postWritten.id}.${$swStore.typeImage}`;
+      if (gotPicture) {
+        await writeImage(gotPicture, uploadPath);
+      }
+/*
+      const postWritten = await JSON.parse(form?.response?.postuserid!);
       const uploadPath = `static/moments/${postWritten.id}.${$swStore.typeImage}`;
       if (gotPicture) {
         await writeImage(gotPicture, uploadPath);
       }
+*/
     }
     createPostClose(true, form?.response?.postuserid);
   }
